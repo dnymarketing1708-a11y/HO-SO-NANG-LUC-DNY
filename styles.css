@@ -199,7 +199,9 @@
 .partner-list{display:flex!important;width:max-content;gap:12px;animation:customerMarquee 78s linear infinite}
 .partner-list:hover{animation-play-state:paused}
 .customer-product{flex:0 0 clamp(250px,20vw,330px)}
-@keyframes customerMarquee{to{transform:translateX(-50%)}}
+/* Include half a card gap in the final offset so the duplicated product set
+   lands exactly where the first one began instead of visibly snapping back. */
+@keyframes customerMarquee{to{transform:translateX(calc(-50% - 4px))}}
 @media(max-width:800px){.partner-list{gap:8px;animation-duration:24s}.customer-product{flex-basis:245px}}
 @media(prefers-reduced-motion:reduce){.partner-list{width:auto;max-width:none;overflow-x:auto;animation:none}}
 
@@ -339,6 +341,6 @@ body.is-viewing-image{overflow:hidden}
 
 /* Faster mobile marquees for the customer projects and partner logos. */
 @media(max-width:800px){
-  .partner-list{animation-duration:7s}
+  .partner-list{animation-duration:10s}
   .client-logos__grid{animation-duration:12s}
 }
