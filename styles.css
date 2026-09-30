@@ -336,3 +336,9 @@ body.is-viewing-image{overflow:hidden}
     transform:none;
   }
 }
+
+/* Faster mobile marquees for the customer projects and partner logos. */
+@media(max-width:800px){
+  .partner-list{animation-duration:12s}
+  .client-logos__grid{animation-duration:12s}
+}
