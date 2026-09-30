@@ -200,7 +200,7 @@
 .partner-list:hover{animation-play-state:paused}
 .customer-product{flex:0 0 clamp(250px,20vw,330px)}
 @keyframes customerMarquee{to{transform:translateX(-50%)}}
-@media(max-width:800px){.partner-list{gap:8px;animation-duration:58s}.customer-product{flex-basis:245px}}
+@media(max-width:800px){.partner-list{gap:8px;animation-duration:24s}.customer-product{flex-basis:245px}}
 @media(prefers-reduced-motion:reduce){.partner-list{width:auto;max-width:none;overflow-x:auto;animation:none}}
 
 /* Full-screen product image viewer. */
@@ -276,3 +276,63 @@ body.is-viewing-image{overflow:hidden}
 @media(max-width:1100px) and (min-width:801px){.support-points li{grid-template-columns:45px minmax(0,1fr);gap:10px}.support-points__icon{width:45px;height:45px;border-radius:8px}.support-points__icon svg{width:33px;height:33px}.support-points p{font-size:12px}}
 @media(min-width:801px) and (max-width:1300px){.operations-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1.65fr)}.operation-card--support{padding:24px 18px;column-gap:12px}.operation-card--support .support-points{padding-left:12px}.operation-card--support .support-points li{grid-template-columns:32px minmax(0,1fr);gap:8px}.operation-card--support .support-points__icon{width:32px;height:36px}.operation-card--support .support-points__icon svg{width:26px;height:26px}.operation-card--support .support-points h5{font-size:16px}}
 @media(max-width:800px){.operations-grid{grid-template-columns:1fr}.operation-card--support{min-height:460px;padding:25px 18px;column-gap:14px}.operation-card--support>h3{font-size:clamp(42px,10vw,76px)}.operation-card--support>h4{font-size:22px}.operation-card--support .support-points{padding-left:12px;gap:16px}.operation-card--support .support-points li{grid-template-columns:32px minmax(0,1fr);gap:8px}.operation-card--support .support-points__icon{width:32px;height:36px}.operation-card--support .support-points__icon svg{width:26px;height:26px}.operation-card--support .support-points h5{font-size:16px}.operation-card--support>p:last-of-type{font-size:11px}}
+
+/* Keep the design-support panel readable on narrow screens.  This override
+   intentionally comes last because the desktop grid is declared later in
+   the stylesheet than the original mobile rule. */
+@media(max-width:800px){
+  .design-note{
+    display:grid;
+    grid-template-columns:minmax(0,1fr);
+    gap:18px;
+    padding:30px 24px;
+  }
+  .design-note b{
+    max-width:100%;
+    font-size:clamp(34px,10vw,42px);
+    line-height:.92;
+    overflow-wrap:normal;
+  }
+  .design-note span{display:none}
+  .design-note p{
+    max-width:none;
+    margin:0;
+    font-size:15px;
+    line-height:1.65;
+  }
+}
+
+/* Hero words must be allowed to wrap inside a phone viewport. */
+@media(max-width:800px){
+  .hero h1{
+    max-width:100%;
+    font-size:clamp(38px,10.5vw,46px);
+    letter-spacing:.2px;
+  }
+  .hero h1 span{white-space:normal}
+}
+
+/* Customer projects: preserve room for the gallery and do not leave the
+   marquee hidden while the mobile intersection animation is pending. */
+@media(max-width:800px){
+  .partners-head{margin-bottom:28px}
+  .partners-head h2{
+    font-size:clamp(42px,11vw,50px);
+    line-height:1.12;
+    letter-spacing:-.7px;
+  }
+  .partner-list.reveal{
+    opacity:1;
+    transform:none;
+  }
+  .partners-note{margin-top:15px}
+}
+
+/* The logo reel owns its transform for the marquee animation, so it should
+   not also wait on the scroll-reveal transform on phones. */
+@media(max-width:800px){
+  .client-logos__grid.reveal{
+    opacity:1;
+    transform:none;
+  }
+}
