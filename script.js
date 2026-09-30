@@ -91,12 +91,12 @@ if(packingPhoto){
 }
 if(processVisual){
   const panels=[
-    ['assets/%E1%BA%A2nh%20ChatGPT%2010_39_27%2029%20thg%209%2C%202026.png','Mẫu áo thể thao đen vàng của DNY Sport'],
-    ['assets/%E1%BA%A2nh%20ChatGPT%2010_40_21%2029%20thg%209%2C%202026.png','Mẫu áo thể thao vàng của DNY Sport'],
-    ['assets/%E1%BA%A2nh%20ChatGPT%2010_50_29%2029%20thg%209%2C%202026.png','Mẫu áo thể thao xanh của DNY Sport'],
-    ['assets/%E1%BA%A2nh%20ChatGPT%2010_53_38%2029%20thg%209%2C%202026.png','Mẫu áo thể thao đỏ của DNY Sport'],
-    ['assets/%E1%BA%A2nh%20ChatGPT%2012_44_00%2029%20thg%209%2C%202026.png','Mẫu đồng phục thể thao DNY Sport'],
-    ['assets/%E1%BA%A2nh%20ChatGPT%2012_42_06%2029%20thg%209%2C%202026.png','Mẫu trang phục thể thao DNY Sport']
+    ['assets/%E1%BA%A2nh%20ChatGPT%2010_39_27%2029%20thg%209%2C%202026.webp','Mẫu áo thể thao đen vàng của DNY Sport'],
+    ['assets/%E1%BA%A2nh%20ChatGPT%2010_40_21%2029%20thg%209%2C%202026.webp','Mẫu áo thể thao vàng của DNY Sport'],
+    ['assets/%E1%BA%A2nh%20ChatGPT%2010_50_29%2029%20thg%209%2C%202026.webp','Mẫu áo thể thao xanh của DNY Sport'],
+    ['assets/%E1%BA%A2nh%20ChatGPT%2010_53_38%2029%20thg%209%2C%202026.webp','Mẫu áo thể thao đỏ của DNY Sport'],
+    ['assets/%E1%BA%A2nh%20ChatGPT%2012_44_00%2029%20thg%209%2C%202026.webp','Mẫu đồng phục thể thao DNY Sport'],
+    ['assets/%E1%BA%A2nh%20ChatGPT%2012_42_06%2029%20thg%209%2C%202026.webp','Mẫu trang phục thể thao DNY Sport']
   ];
   processVisual.classList.add('process-carousel');
   processVisual.innerHTML=`<div class="process-carousel__slides">${panels.map(([src,label],index)=>`<figure class="process-carousel__slide${index===0?' is-active':''}"><img src="${src}" alt="${label}" loading="lazy"><figcaption>${String(index+1).padStart(2,'0')} / ${label}</figcaption></figure>`).join('')}</div><div class="process-carousel__controls"><button type="button" class="process-carousel__arrow" data-direction="previous" aria-label="Xem mẫu trước">←</button><div class="process-carousel__dots" role="tablist" aria-label="Chọn mẫu áo">${panels.map(([,label],index)=>`<button type="button" role="tab" aria-label="${label}" aria-selected="${index===0}" data-slide="${index}"></button>`).join('')}</div><button type="button" class="process-carousel__arrow" data-direction="next" aria-label="Xem mẫu tiếp theo">→</button></div>`;
@@ -128,12 +128,12 @@ if(kitGallery){
     gym:'ÁO GYM – YOGA'
   };
   const kitImages={
-    football:['ao-bong-da-dny-ha-noi-khue-van-cac-dny-2607160139-1.jpg','bo-quan-ao-bong-da-dny-xanh-ngoc-chim-lac-dny-2608150143-1.jpg','quan-ao-bong-da-thiet-ke-dny-2510030085-1.jpg','quan-ao-bong-da-warrior-berserker-dny-2603070108-1.jpg'].map(file=>`assets/bóng đá/${file}`),
-    basketball:['ao-bong-ro-den-cam-13-dny-br2604200105-1.jpg','ao-jersey-bong-ro-dny-den-hoa-tiet-tho-cam-dny-br2609080117-1.jpg','dong-phuc-bong-ro-dny-br2509300094-2.jpg','quan-ao-bong-ro-thiet-ke-dny-br2510300097-2.jpg'].map(file=>`assets/bóng rổ/${file}`),
-    volleyball:['ao-bong-chuyen-thi-dau-dny-vb2507070040-1.jpg','bo-quan-ao-bong-chuyen-dny-xanh-duong-loang-may-dny-vb2609230061-2.jpg','do-bong-chuyen-dny-trang-van-xanh-la-libero-dny-vb2609230064-2.jpg','quan-ao-bong-chuyen-clb-thiet-ke-theo-yeu-cau-dny-vb2504090030-1.jpg'].map(file=>`assets/bóng chuyền/${file}`),
-    baseball:['ao-bong-chay-dny-brasil-vang-xanh-dny-bc2606230111-11.jpg','ao-bong-chay-dny-viet-nam-den-do-rong-dny-bc2607300113-3.jpg','ao-bong-chay-dny-viet-nam-trang-kem-vintage-dny-bc2607300116-3.jpg','ao-bong-chay-nam-nu-doc-dao-dny-bc2501100043-6.jpg'].map(file=>`assets/bóng chày/${file}`),
-    pickleball:['35.jpg','ao-pickleball-xanh-hong-dny-pb2512020068-1.jpg','dong-phuc-pickleball-dny-pb2510140066-1.jpg','quan-ao-pickleball-thiet-ke-thoi-trang-dny-pb2501140034-6.jpg'].map(file=>`assets/pickleball/${file}`),
-    gym:['ao-gym-den-dny-gym2512060077-1.jpg','ao-gym-trang-neon-dny-gym2604100095-1.jpg','ao-polo-pt-dny-trang-phoi-do-dong-phuc-coach-dny-gym2608240108-1.jpg','ao-tap-gym-pt-dny-xanh-duong-vang-dny-gym2607130105-21.jpg'].map(file=>`assets/gym/${file}`)
+    football:['ao-bong-da-dny-ha-noi-khue-van-cac-dny-2607160139-1.webp','bo-quan-ao-bong-da-dny-xanh-ngoc-chim-lac-dny-2608150143-1.webp','quan-ao-bong-da-thiet-ke-dny-2510030085-1.webp','quan-ao-bong-da-warrior-berserker-dny-2603070108-1.webp'].map(file=>`assets/bóng đá/${file}`),
+    basketball:['ao-bong-ro-den-cam-13-dny-br2604200105-1.webp','ao-jersey-bong-ro-dny-den-hoa-tiet-tho-cam-dny-br2609080117-1.webp','dong-phuc-bong-ro-dny-br2509300094-2.webp','quan-ao-bong-ro-thiet-ke-dny-br2510300097-2.webp'].map(file=>`assets/bóng rổ/${file}`),
+    volleyball:['ao-bong-chuyen-thi-dau-dny-vb2507070040-1.webp','bo-quan-ao-bong-chuyen-dny-xanh-duong-loang-may-dny-vb2609230061-2.webp','do-bong-chuyen-dny-trang-van-xanh-la-libero-dny-vb2609230064-2.webp','quan-ao-bong-chuyen-clb-thiet-ke-theo-yeu-cau-dny-vb2504090030-1.webp'].map(file=>`assets/bóng chuyền/${file}`),
+    baseball:['ao-bong-chay-dny-brasil-vang-xanh-dny-bc2606230111-11.webp','ao-bong-chay-dny-viet-nam-den-do-rong-dny-bc2607300113-3.webp','ao-bong-chay-dny-viet-nam-trang-kem-vintage-dny-bc2607300116-3.webp','ao-bong-chay-nam-nu-doc-dao-dny-bc2501100043-6.webp'].map(file=>`assets/bóng chày/${file}`),
+    pickleball:['35.webp','ao-pickleball-xanh-hong-dny-pb2512020068-1.webp','dong-phuc-pickleball-dny-pb2510140066-1.webp','quan-ao-pickleball-thiet-ke-thoi-trang-dny-pb2501140034-6.webp'].map(file=>`assets/pickleball/${file}`),
+    gym:['ao-gym-den-dny-gym2512060077-1.webp','ao-gym-trang-neon-dny-gym2604100095-1.webp','ao-polo-pt-dny-trang-phoi-do-dong-phuc-coach-dny-gym2608240108-1.webp','ao-tap-gym-pt-dny-xanh-duong-vang-dny-gym2607130105-21.webp'].map(file=>`assets/gym/${file}`)
   };
   const kitButtons=[...document.querySelectorAll('.kit-type')];
   const kitTitle=kitGallery.querySelector('.kit-gallery__head h3 span');
@@ -159,18 +159,18 @@ if(kitGallery){
 }
 
 const customerProducts=[
-  ['Ảnh ChatGPT 10_40_21 29 thg 9, 2026.png','Maxim','Áo thun đồng phục','Áo thun đồng phục Maxim màu vàng nổi bật, nhận diện Car – Bike rõ ràng, phù hợp đội ngũ dịch vụ di chuyển.'],
-  ['Ảnh ChatGPT 10_55_47 29 thg 9, 2026.png','Dragon Hoops','Áo bóng rổ','Áo bóng rổ Dragon Hoops tông đỏ, phối biểu tượng rồng và họa tiết trống đồng, tạo phong cách mạnh mẽ và đậm chất Việt.'],
-  ['Ảnh ChatGPT 10_58_20 29 thg 9, 2026.png','DNY Sport / Nghiện Đạp','Áo đạp xe','Áo đạp xe Nghiện Đạp tông đỏ – vàng, khai thác họa tiết trống đồng và bản đồ Việt Nam, mang tinh thần thể thao gắn với bản sắc Việt.'],
-  ['Ảnh ChatGPT 11_00_57 29 thg 9, 2026.png','Sacombank – Lộ Bình Hòa','Bộ áo quần thể thao','Bộ đồng phục thể thao Sacombank Lộ Bình Hòa phối xanh – cam, họa tiết graphic mạnh và số áo nổi bật, phù hợp hoạt động đội nhóm.'],
-  ['Ảnh ChatGPT 11_07_15 29 thg 9, 2026.png','Vua Cầu Lông','Áo cầu lông','Áo cầu lông Vua Cầu Lông phối đen – xanh mint, họa tiết hình học năng động, mang phong cách hiện đại đúng tinh thần môn cầu lông.'],
-  ['Ảnh ChatGPT 11_11_33 29 thg 9, 2026.png','Relove Deep Cross Gaming','Áo Esports','Áo thi đấu Relove Deep Cross Gaming tông đen, thiết kế gaming tối giản với hệ thống logo đội tuyển và nhà tài trợ nổi bật.'],
-  ['Ảnh ChatGPT 11_15_37 29 thg 9, 2026.png','Bến Tre Fishing Group','Áo khoác câu cá','Áo khoác Bến Tre Fishing Group tông xanh – trắng, có mũ và họa tiết lưới/cá đặc trưng, phù hợp hoạt động câu cá ngoài trời.'],
-  ['Ảnh ChatGPT 11_18_07 29 thg 9, 2026.png','ACE Gym / Personal Trainer','Áo polo thể thao','Áo polo Personal Trainer phối đen – hồng nhạt, đường line ôm thân khỏe khoắn, phù hợp đồng phục huấn luyện viên và phòng gym.'],
-  ['Ảnh ChatGPT 11_22_43 29 thg 9, 2026.png','Tyresö','Áo khoác thể thao','Áo khoác Tyresö đen – trắng với graphic minh họa mạnh, bố cục trước sau cá tính và phong cách street-sport nổi bật.'],
-  ['Ảnh ChatGPT 12_40_49 29 thg 9, 2026.png','Vietstock','Áo polo Pickleball','Áo polo Vietstock phối trắng – xanh, họa tiết hình học cùng biểu tượng vợt pickleball, phù hợp sự kiện và hoạt động thể thao doanh nghiệp.'],
-  ['Ảnh ChatGPT 12_42_06 29 thg 9, 2026.png','KW / Muay Thai','Quần Muay Thai','Quần Muay Thai KW màu đỏ, phom short thi đấu đặc trưng với chữ Thái và patch võ thuật, tạo cảm giác mạnh mẽ trên sàn tập.'],
-  ['Ảnh ChatGPT 12_44_00 29 thg 9, 2026.png','K-Metal Works Customs / Kiên Phạm','Quần võ thuật','Quần võ thuật cá nhân hóa Kiên Phạm tông xanh đậm – vàng, họa tiết bông lúa và cờ Việt Nam, nhấn mạnh tinh thần thi đấu cá nhân.']
+  ['Ảnh ChatGPT 10_40_21 29 thg 9, 2026.webp','Maxim','Áo thun đồng phục','Áo thun đồng phục Maxim màu vàng nổi bật, nhận diện Car – Bike rõ ràng, phù hợp đội ngũ dịch vụ di chuyển.'],
+  ['Ảnh ChatGPT 10_55_47 29 thg 9, 2026.webp','Dragon Hoops','Áo bóng rổ','Áo bóng rổ Dragon Hoops tông đỏ, phối biểu tượng rồng và họa tiết trống đồng, tạo phong cách mạnh mẽ và đậm chất Việt.'],
+  ['Ảnh ChatGPT 10_58_20 29 thg 9, 2026.webp','DNY Sport / Nghiện Đạp','Áo đạp xe','Áo đạp xe Nghiện Đạp tông đỏ – vàng, khai thác họa tiết trống đồng và bản đồ Việt Nam, mang tinh thần thể thao gắn với bản sắc Việt.'],
+  ['Ảnh ChatGPT 11_00_57 29 thg 9, 2026.webp','Sacombank – Lộ Bình Hòa','Bộ áo quần thể thao','Bộ đồng phục thể thao Sacombank Lộ Bình Hòa phối xanh – cam, họa tiết graphic mạnh và số áo nổi bật, phù hợp hoạt động đội nhóm.'],
+  ['Ảnh ChatGPT 11_07_15 29 thg 9, 2026.webp','Vua Cầu Lông','Áo cầu lông','Áo cầu lông Vua Cầu Lông phối đen – xanh mint, họa tiết hình học năng động, mang phong cách hiện đại đúng tinh thần môn cầu lông.'],
+  ['Ảnh ChatGPT 11_11_33 29 thg 9, 2026.webp','Relove Deep Cross Gaming','Áo Esports','Áo thi đấu Relove Deep Cross Gaming tông đen, thiết kế gaming tối giản với hệ thống logo đội tuyển và nhà tài trợ nổi bật.'],
+  ['Ảnh ChatGPT 11_15_37 29 thg 9, 2026.webp','Bến Tre Fishing Group','Áo khoác câu cá','Áo khoác Bến Tre Fishing Group tông xanh – trắng, có mũ và họa tiết lưới/cá đặc trưng, phù hợp hoạt động câu cá ngoài trời.'],
+  ['Ảnh ChatGPT 11_18_07 29 thg 9, 2026.webp','ACE Gym / Personal Trainer','Áo polo thể thao','Áo polo Personal Trainer phối đen – hồng nhạt, đường line ôm thân khỏe khoắn, phù hợp đồng phục huấn luyện viên và phòng gym.'],
+  ['Ảnh ChatGPT 11_22_43 29 thg 9, 2026.webp','Tyresö','Áo khoác thể thao','Áo khoác Tyresö đen – trắng với graphic minh họa mạnh, bố cục trước sau cá tính và phong cách street-sport nổi bật.'],
+  ['Ảnh ChatGPT 12_40_49 29 thg 9, 2026.webp','Vietstock','Áo polo Pickleball','Áo polo Vietstock phối trắng – xanh, họa tiết hình học cùng biểu tượng vợt pickleball, phù hợp sự kiện và hoạt động thể thao doanh nghiệp.'],
+  ['Ảnh ChatGPT 12_42_06 29 thg 9, 2026.webp','KW / Muay Thai','Quần Muay Thai','Quần Muay Thai KW màu đỏ, phom short thi đấu đặc trưng với chữ Thái và patch võ thuật, tạo cảm giác mạnh mẽ trên sàn tập.'],
+  ['Ảnh ChatGPT 12_44_00 29 thg 9, 2026.webp','K-Metal Works Customs / Kiên Phạm','Quần võ thuật','Quần võ thuật cá nhân hóa Kiên Phạm tông xanh đậm – vàng, họa tiết bông lúa và cờ Việt Nam, nhấn mạnh tinh thần thi đấu cá nhân.']
 ];
 const customerList=document.querySelector('.partner-list');
 if(customerList){customerList.innerHTML=[...customerProducts,...customerProducts].map(([file,brand,type,description],index)=>`<article class="customer-product" data-product-index="${index%customerProducts.length}"${index>=customerProducts.length?' aria-hidden="true"':''}><img src="${encodeURI(`assets/KHÁCH HÀNG/${file}`)}" alt="${index>=customerProducts.length?'':description}" loading="lazy"><span><b>${String((index%customerProducts.length)+1).padStart(2,'0')} / ${brand}</b><em>${type}</em><small>${description}</small></span></article>`).join('')}
