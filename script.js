@@ -2,7 +2,6 @@ const header=document.querySelector('.site-header');
 const menu=document.querySelector('.menu-toggle');
 const prefersReducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const mobileMotionQuery=window.matchMedia('(max-width: 800px)');
-const motionDuration=(desktopDuration)=>mobileMotionQuery.matches?desktopDuration/3:desktopDuration;
 
 menu?.addEventListener('click',()=>{header.classList.toggle('open');menu.setAttribute('aria-expanded',header.classList.contains('open'))});
 document.querySelectorAll('nav a').forEach(a=>a.addEventListener('click',()=>header.classList.remove('open')));
@@ -81,14 +80,23 @@ if(packingPhoto){
   const controls=packingPhoto.querySelector('.packing-controls');
   controls.innerHTML='<button type="button" aria-label="Tạm dừng cuộn ảnh">Ⅱ</button>';
   const toggle=controls.querySelector('button');
-  const motion=track.animate([{transform:'translateX(0)'},{transform:'translateX(-50%)'}],{duration:motionDuration(30000),iterations:Infinity,easing:'linear'});
+  const motion=track.animate([{transform:'translateX(0)'},{transform:'translateX(-50%)'}],{duration:mobileMotionQuery.matches?10000:30000,iterations:Infinity,easing:'linear'});
   let paused=prefersReducedMotion;
+  let isPackingVisible=false;
   const updateMotion=()=>{
-    if(paused)motion.pause();else motion.play();
+    const isMotionActive=!paused&&isPackingVisible&&!document.hidden;
+    packingPhoto.classList.toggle('is-motion-active',isMotionActive);
+    if(isMotionActive)motion.play();else motion.pause();
     toggle.textContent=paused?'▶':'Ⅱ';
     toggle.setAttribute('aria-label',paused?'Tiếp tục cuộn ảnh':'Tạm dừng cuộn ảnh');
   };
   toggle.addEventListener('click',()=>{paused=!paused;updateMotion()});
+  const packingObserver=new IntersectionObserver(entries=>{
+    isPackingVisible=entries[0].isIntersecting;
+    updateMotion();
+  },{threshold:.05});
+  packingObserver.observe(packingPhoto);
+  document.addEventListener('visibilitychange',updateMotion);
   updateMotion();
 }
 if(processVisual){
@@ -106,16 +114,26 @@ if(processVisual){
   const dots=[...processVisual.querySelectorAll('.process-carousel__dots button')];
   let activeSlide=0;
   let sliderTimer;
+  let isCarouselVisible=false;
   const showSlide=index=>{
     activeSlide=(index+slides.length)%slides.length;
     slides.forEach((slide,itemIndex)=>slide.classList.toggle('is-active',itemIndex===activeSlide));
     dots.forEach((dot,itemIndex)=>dot.setAttribute('aria-selected',itemIndex===activeSlide?'true':'false'));
   };
-  const startSlider=()=>{clearInterval(sliderTimer);sliderTimer=setInterval(()=>showSlide(activeSlide+1),motionDuration(3000))};
+  const startSlider=()=>{
+    clearInterval(sliderTimer);
+    if(!prefersReducedMotion&&isCarouselVisible&&!document.hidden)sliderTimer=setInterval(()=>showSlide(activeSlide+1),3000);
+  };
   processVisual.querySelectorAll('.process-carousel__arrow').forEach(button=>button.addEventListener('click',()=>{showSlide(activeSlide+(button.dataset.direction==='next'?1:-1));startSlider()}));
   dots.forEach((dot,index)=>dot.addEventListener('click',()=>{showSlide(index);startSlider()}));
   processVisual.addEventListener('mouseenter',()=>clearInterval(sliderTimer));
   processVisual.addEventListener('mouseleave',startSlider);
+  const carouselObserver=new IntersectionObserver(entries=>{
+    isCarouselVisible=entries[0].isIntersecting;
+    startSlider();
+  },{threshold:.1});
+  carouselObserver.observe(processVisual);
+  document.addEventListener('visibilitychange',startSlider);
   startSlider();
 }
 
@@ -177,6 +195,22 @@ const customerProducts=[
 const customerList=document.querySelector('.partner-list');
 if(customerList){customerList.innerHTML=[...customerProducts,...customerProducts].map(([file,brand,type,description],index)=>`<article class="customer-product" data-product-index="${index%customerProducts.length}"${index>=customerProducts.length?' aria-hidden="true"':''}><img src="${encodeURI(`assets/KHÁCH HÀNG/${file}`)}" alt="${index>=customerProducts.length?'':description}" loading="lazy"><span><b>${String((index%customerProducts.length)+1).padStart(2,'0')} / ${brand}</b><em>${type}</em><small>${description}</small></span></article>`).join('')}
 
+// Keep decorative reels off the compositor until visitors can actually see them.
+if(!prefersReducedMotion){
+  const marqueeObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{
+    entry.target.classList.toggle('is-in-view',entry.isIntersecting);
+    entry.target.classList.toggle('is-motion-paused',!entry.isIntersecting||document.hidden);
+  }),{threshold:.01});
+  const marquees=[...document.querySelectorAll('.partner-list,.client-logos__grid')];
+  marquees.forEach(reel=>{
+    reel.classList.add('is-motion-paused');
+    marqueeObserver.observe(reel);
+  });
+  document.addEventListener('visibilitychange',()=>{
+    marquees.forEach(reel=>reel.classList.toggle('is-motion-paused',document.hidden||!reel.classList.contains('is-in-view')));
+  });
+}
+
 const imageViewer=document.createElement('dialog');
 imageViewer.className='image-viewer';
 imageViewer.innerHTML='<button class="image-viewer__close" type="button" aria-label="Đóng trình xem ảnh">×</button><div class="image-viewer__stage"><img draggable="false" alt=""></div><div class="image-viewer__toolbar"><button type="button" data-viewer-action="zoom-out" aria-label="Thu nhỏ">−</button><button type="button" data-viewer-action="reset" aria-label="Đặt lại kích thước">100%</button><button type="button" data-viewer-action="zoom-in" aria-label="Phóng to">+</button></div><div class="image-viewer__caption"></div>';
@@ -225,13 +259,16 @@ let ticking=false;
 const updateScrollMotion=()=>{
   const offset=window.scrollY;
   header.classList.toggle('is-scrolled',offset>24);
-  if(!prefersReducedMotion){
-    const heroImage=document.querySelector('.hero-image');
+  const heroImage=document.querySelector('.hero-image');
+  if(!prefersReducedMotion&&!mobileMotionQuery.matches){
     if(heroImage)heroImage.style.transform=`scale(1.035) translateY(${Math.min(offset*.12,58)}px)`;
+  }else if(heroImage){
+    heroImage.style.transform='';
   }
   ticking=false;
 };
 window.addEventListener('scroll',()=>{if(!ticking){requestAnimationFrame(updateScrollMotion);ticking=true}},{passive:true});
+window.addEventListener('resize',updateScrollMotion,{passive:true});
 updateScrollMotion();
 
 const contactSection=document.querySelector('.contact');

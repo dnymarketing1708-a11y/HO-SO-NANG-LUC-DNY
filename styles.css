@@ -48,7 +48,8 @@
 /* Packing feature beneath the customer product collection. */
 .packing-feature{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);margin-top:56px;background:#07131e;color:#fff;overflow:hidden}
 .packing-feature__photo{position:relative;margin:0;min-height:520px;overflow:hidden}
-.packing-track{position:absolute;inset:0 auto 0 0;width:600%;height:100%;display:flex;will-change:transform}
+.packing-track{position:absolute;inset:0 auto 0 0;width:600%;height:100%;display:flex;will-change:auto}
+.packing-feature__photo.is-motion-active .packing-track{will-change:transform}
 .packing-feature__photo .packing-track img{position:static;flex:0 0 calc(100% / 6);width:calc(100% / 6);min-width:0;height:100%;object-fit:cover}
 .packing-feature__photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .packing-feature__photo img[hidden]{display:none}
@@ -339,8 +340,19 @@ body.is-viewing-image{overflow:hidden}
   }
 }
 
-/* Faster mobile marquees for the customer projects and partner logos. */
+.partner-list.is-motion-paused,.client-logos__grid.is-motion-paused{animation-play-state:paused}
+
+/* Three times faster than the standard mobile reels, without keeping an
+   off-screen image track active on the GPU. */
 @media(max-width:800px){
-  .partner-list{animation-duration:2s}
-  .client-logos__grid{animation-duration:4s}
+  .partner-list{animation-duration:8s}
+  .client-logos__grid{animation-duration:8.7s}
+  .partner-list.is-in-view,.client-logos__grid.is-in-view{will-change:transform}
+  .client-logos__grid img{mix-blend-mode:normal}
+  .process-carousel__slide.is-active img{animation:none}
+  .site-header.is-scrolled{backdrop-filter:none}
 }
+
+/* The original cutting-table asset is not present in the published tree. */
+.process-visual{background-image:linear-gradient(110deg,rgba(6,17,26,.12),rgba(6,17,26,.48)),url('assets/dny-cutting-operator.webp')!important}
+.production-strip div:nth-child(1){background-image:url('assets/dny-cutting-operator.webp')!important}
