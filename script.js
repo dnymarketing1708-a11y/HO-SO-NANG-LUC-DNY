@@ -193,14 +193,25 @@ const customerProducts=[
   ['Ảnh ChatGPT 12_44_00 29 thg 9, 2026.webp','K-Metal Works Customs / Kiên Phạm','Quần võ thuật','Quần võ thuật cá nhân hóa Kiên Phạm tông xanh đậm – vàng, họa tiết bông lúa và cờ Việt Nam, nhấn mạnh tinh thần thi đấu cá nhân.']
 ];
 const customerList=document.querySelector('.partner-list');
-if(customerList){customerList.innerHTML=[...customerProducts,...customerProducts].map(([file,brand,type,description],index)=>`<article class="customer-product" data-product-index="${index%customerProducts.length}"${index>=customerProducts.length?' aria-hidden="true"':''}><img src="${encodeURI(`assets/KHÁCH HÀNG/${file}`)}" alt="${index>=customerProducts.length?'':description}" loading="lazy"><span><b>${String((index%customerProducts.length)+1).padStart(2,'0')} / ${brand}</b><em>${type}</em><small>${description}</small></span></article>`).join('')}
+if(customerList){
+  customerList.innerHTML=[...customerProducts,...customerProducts].map(([file,brand,type,description],index)=>`<article class="customer-product" data-product-index="${index%customerProducts.length}"${index>=customerProducts.length?' aria-hidden="true"':''}><img src="${encodeURI(`assets/KHÁCH HÀNG/${file}`)}" alt="${index>=customerProducts.length?'':description}" loading="lazy" decoding="async"><span><b>${String((index%customerProducts.length)+1).padStart(2,'0')} / ${brand}</b><em>${type}</em><small>${description}</small></span></article>`).join('');
+  const preloadCustomerImages=()=>{
+    [...customerList.querySelectorAll('img')].slice(0,customerProducts.length).forEach(image=>{image.loading='eager'});
+  };
+  const customerImageObserver=new IntersectionObserver(entries=>{
+    if(!entries[0].isIntersecting)return;
+    preloadCustomerImages();
+    customerImageObserver.unobserve(customerList);
+  },{rootMargin:'900px 0px'});
+  customerImageObserver.observe(customerList);
+}
 
 // Keep decorative reels off the compositor until visitors can actually see them.
 if(!prefersReducedMotion){
   const marqueeObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{
     entry.target.classList.toggle('is-in-view',entry.isIntersecting);
     entry.target.classList.toggle('is-motion-paused',!entry.isIntersecting||document.hidden);
-  }),{threshold:.01});
+  }),{threshold:.01,rootMargin:'160px 0px'});
   const marquees=[...document.querySelectorAll('.partner-list,.client-logos__grid')];
   marquees.forEach(reel=>{
     reel.classList.add('is-motion-paused');

@@ -342,11 +342,10 @@ body.is-viewing-image{overflow:hidden}
 
 .partner-list.is-motion-paused,.client-logos__grid.is-motion-paused{animation-play-state:paused}
 
-/* Three times faster than the standard mobile reels, without keeping an
-   off-screen image track active on the GPU. */
+/* Keep each customer product on screen long enough to load and read. */
 @media(max-width:800px){
-  .partner-list{animation-duration:8s}
-  .client-logos__grid{animation-duration:8.7s}
+  .partner-list{animation-duration:24s}
+  .client-logos__grid{animation-duration:12s}
   .partner-list.is-in-view,.client-logos__grid.is-in-view{will-change:transform}
   .client-logos__grid img{mix-blend-mode:normal}
   .process-carousel__slide.is-active img{animation:none}
