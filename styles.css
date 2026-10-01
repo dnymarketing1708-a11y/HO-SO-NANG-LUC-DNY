@@ -341,6 +341,6 @@ body.is-viewing-image{overflow:hidden}
 
 /* Faster mobile marquees for the customer projects and partner logos. */
 @media(max-width:800px){
-  .partner-list{animation-duration:6s}
-  .client-logos__grid{animation-duration:12s}
+  .partner-list{animation-duration:2s}
+  .client-logos__grid{animation-duration:4s}
 }

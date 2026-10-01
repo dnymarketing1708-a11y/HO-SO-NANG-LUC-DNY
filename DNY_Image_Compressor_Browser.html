@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DNY Image Compressor</title>
+<style>
+  :root{font-family:Segoe UI,Arial,sans-serif;color:#111827;background:#f3f4f6}
+  body{margin:0;padding:24px}
+  .app{max-width:820px;margin:auto;background:#fff;border-radius:18px;padding:28px;box-shadow:0 12px 40px rgba(0,0,0,.08)}
+  h1{margin:0 0 8px;font-size:28px}
+  .sub{color:#6b7280;margin-bottom:24px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  label{display:block;font-weight:600;margin-bottom:7px}
+  select,input[type=number],input[type=file]{width:100%;box-sizing:border-box;padding:11px 12px;border:1px solid #d1d5db;border-radius:10px;background:#fff}
+  .full{grid-column:1/-1}
+  .tip{background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:14px;color:#374151;margin-top:16px}
+  button{border:0;border-radius:11px;padding:13px 18px;font-size:15px;font-weight:700;cursor:pointer}
+  #start{background:#111827;color:white;margin-top:18px}
+  #start:disabled{opacity:.5;cursor:not-allowed}
+  progress{width:100%;height:22px;margin-top:18px}
+  #status{margin-top:10px;font-weight:600}
+  #log{margin-top:12px;height:170px;overflow:auto;background:#0b1020;color:#d1fae5;border-radius:10px;padding:12px;font-family:Consolas,monospace;font-size:12px;white-space:pre-wrap}
+  .small{font-size:13px;color:#6b7280}
+  .check{display:flex;align-items:center;gap:8px;margin-top:8px}
+  .check input{width:auto}
+  @media(max-width:650px){.grid{grid-template-columns:1fr}.full{grid-column:auto}}
+</style>
+</head>
+<body>
+<div class="app">
+  <h1>DNY Image Compressor</h1>
+  <div class="sub">Nén / resize ảnh hàng loạt ngay trong trình duyệt. Ảnh gốc không bị sửa.</div>
+
+  <div class="grid">
+    <div class="full">
+      <label>1. Chọn thư mục ảnh</label>
+      <input id="files" type="file" accept="image/png,image/jpeg,image/webp" webkitdirectory multiple>
+      <div class="small" id="count">Chưa chọn thư mục.</div>
+    </div>
+
+    <div>
+      <label>2. Cạnh dài tối đa</label>
+      <select id="maxpx">
+        <option value="0">Giữ nguyên kích thước</option>
+        <option value="2400">2400 px</option>
+        <option value="1800" selected>1800 px — khuyên dùng</option>
+        <option value="1600">1600 px</option>
+        <option value="1200">1200 px</option>
+      </select>
+    </div>
+
+    <div>
+      <label>3. Định dạng đầu ra</label>
+      <select id="format">
+        <option value="keep">Giữ nguyên định dạng</option>
+        <option value="jpeg">JPG — nhẹ, hợp nền trắng</option>
+        <option value="webp">WebP — rất nhẹ, hợp website</option>
+        <option value="png">PNG — giữ nền trong suốt</option>
+      </select>
+    </div>
+
+    <div>
+      <label>4. Chất lượng JPG / WebP</label>
+      <input id="quality" type="number" min="50" max="100" value="88">
+    </div>
+
+    <div>
+      <label>Tùy chọn</label>
+      <div class="check"><input id="keepSmaller" type="checkbox" checked><span>Nếu bản mới lớn hơn, giữ file gốc</span></div>
+    </div>
+  </div>
+
+  <div class="tip">
+    <b>Gợi ý cho mockup DNY:</b> 1800 px + JPG 88 nếu ảnh nền trắng. Nếu dùng website, WebP 85–90 thường nhẹ hơn nữa. Nếu cần nền trong suốt, chọn PNG/WebP.
+  </div>
+
+  <button id="start">NÉN TẤT CẢ ẢNH</button>
+  <progress id="progress" value="0" max="1"></progress>
+  <div id="status">Sẵn sàng.</div>
+  <div id="log"></div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const filesEl = $('files'), startBtn = $('start'), logEl = $('log');
+
+filesEl.addEventListener('change', () => {
+  const imgs = [...filesEl.files].filter(f => /^image\/(png|jpeg|webp)$/.test(f.type));
+  $('count').textContent = imgs.length ? `Đã chọn ${imgs.length} ảnh.` : 'Không có ảnh phù hợp.';
+});
+
+function fmt(n){
+  if(n>=1073741824) return (n/1073741824).toFixed(2)+' GB';
+  if(n>=1048576) return (n/1048576).toFixed(2)+' MB';
+  if(n>=1024) return Math.round(n/1024)+' KB';
+  return n+' B';
+}
+function extFor(format, originalName){
+  if(format==='jpeg') return '.jpg';
+  if(format==='webp') return '.webp';
+  if(format==='png') return '.png';
+  const m = originalName.toLowerCase().match(/\.(png|jpe?g|webp)$/);
+  return m ? (m[1]==='jpeg'?'.jpg':'.'+m[1]) : '.jpg';
+}
+function baseName(name){ return name.replace(/\.[^.]+$/,''); }
+function mimeFor(format, file){
+  if(format==='keep') return file.type || 'image/jpeg';
+  return format==='jpeg' ? 'image/jpeg' : format==='webp' ? 'image/webp' : 'image/png';
+}
+async function loadBitmap(file){
+  if('createImageBitmap' in window) return await createImageBitmap(file);
+  return await new Promise((resolve,reject)=>{
+    const img=new Image(), url=URL.createObjectURL(file);
+    img.onload=()=>{URL.revokeObjectURL(url);resolve(img)};
+    img.onerror=e=>{URL.revokeObjectURL(url);reject(e)};
+    img.src=url;
+  });
+}
+async function compressImage(file, maxPx, format, quality){
+  const img = await loadBitmap(file);
+  const w = img.width, h = img.height;
+  let tw=w, th=h;
+  if(maxPx>0 && Math.max(w,h)>maxPx){
+    const s=maxPx/Math.max(w,h);
+    tw=Math.max(1,Math.round(w*s)); th=Math.max(1,Math.round(h*s));
+  }
+  const canvas=document.createElement('canvas');
+  canvas.width=tw; canvas.height=th;
+  const ctx=canvas.getContext('2d',{alpha:true});
+  const mime=mimeFor(format,file);
+  if(mime==='image/jpeg'){ ctx.fillStyle='#fff'; ctx.fillRect(0,0,tw,th); }
+  ctx.imageSmoothingEnabled=true;
+  ctx.imageSmoothingQuality='high';
+  ctx.drawImage(img,0,0,tw,th);
+  if(img.close) img.close();
+  const q=Math.min(1,Math.max(.5,quality/100));
+  return await new Promise((resolve,reject)=>{
+    canvas.toBlob(b=>b?resolve(b):reject(new Error('Không tạo được ảnh đầu ra')),mime,(mime==='image/png'?undefined:q));
+  });
+}
+
+/* CRC32 + ZIP "store" writer. Image files are already compressed, so storing them is efficient and dependency-free. */
+const crcTable = (() => {
+  const t = new Uint32Array(256);
+  for(let n=0;n<256;n++){
+    let c=n;
+    for(let k=0;k<8;k++) c=(c&1)?(0xEDB88320^(c>>>1)):(c>>>1);
+    t[n]=c>>>0;
+  }
+  return t;
+})();
+function crc32(bytes){
+  let c=0xFFFFFFFF;
+  for(let i=0;i<bytes.length;i++) c=crcTable[(c^bytes[i])&0xFF]^(c>>>8);
+  return (c^0xFFFFFFFF)>>>0;
+}
+function u16(n){ return [n&255,(n>>>8)&255]; }
+function u32(n){ return [n&255,(n>>>8)&255,(n>>>16)&255,(n>>>24)&255]; }
+function dosDateTime(d=new Date()){
+  const year=Math.max(1980,d.getFullYear());
+  const time=(d.getHours()<<11)|(d.getMinutes()<<5)|(d.getSeconds()>>1);
+  const date=((year-1980)<<9)|((d.getMonth()+1)<<5)|d.getDate();
+  return {time,date};
+}
+async function makeZip(entries){
+  const enc=new TextEncoder(), chunks=[], central=[];
+  let offset=0;
+  for(const e of entries){
+    const nameBytes=enc.encode(e.name.replace(/\\/g,'/'));
+    const data=new Uint8Array(await e.blob.arrayBuffer());
+    const crc=crc32(data), dt=dosDateTime(e.date||new Date());
+    const local=new Uint8Array([
+      0x50,0x4b,0x03,0x04, ...u16(20), ...u16(0x0800), ...u16(0),
+      ...u16(dt.time), ...u16(dt.date), ...u32(crc), ...u32(data.length), ...u32(data.length),
+      ...u16(nameBytes.length), ...u16(0)
+    ]);
+    chunks.push(local,nameBytes,data);
+    const cen=new Uint8Array([
+      0x50,0x4b,0x01,0x02, ...u16(20), ...u16(20), ...u16(0x0800), ...u16(0),
+      ...u16(dt.time), ...u16(dt.date), ...u32(crc), ...u32(data.length), ...u32(data.length),
+      ...u16(nameBytes.length), ...u16(0), ...u16(0), ...u16(0), ...u16(0), ...u32(0), ...u32(offset)
+    ]);
+    central.push(cen,nameBytes);
+    offset += local.length+nameBytes.length+data.length;
+  }
+  const centralOffset=offset;
+  const centralSize=central.reduce((s,a)=>s+a.length,0);
+  const end=new Uint8Array([
+    0x50,0x4b,0x05,0x06, ...u16(0), ...u16(0), ...u16(entries.length), ...u16(entries.length),
+    ...u32(centralSize), ...u32(centralOffset), ...u16(0)
+  ]);
+  return new Blob([...chunks,...central,end],{type:'application/zip'});
+}
+
+startBtn.addEventListener('click', async()=>{
+  const files=[...filesEl.files].filter(f => /^image\/(png|jpeg|webp)$/.test(f.type));
+  if(!files.length){ alert('Hãy chọn thư mục có ảnh trước nhé.'); return; }
+
+  startBtn.disabled=true; logEl.textContent='';
+  const maxPx=Number($('maxpx').value);
+  const format=$('format').value;
+  const quality=Number($('quality').value)||88;
+  const keepSmaller=$('keepSmaller').checked;
+  $('progress').max=files.length; $('progress').value=0;
+
+  let before=0, after=0, ok=0, fail=0;
+  const entries=[];
+
+  for(let i=0;i<files.length;i++){
+    const f=files[i]; before+=f.size;
+    $('status').textContent=`Đang xử lý ${i+1}/${files.length}: ${f.name}`;
+    try{
+      let out=await compressImage(f,maxPx,format,quality);
+      const sameType=(format==='keep') ||
+        (format==='png'&&f.type==='image/png') ||
+        (format==='jpeg'&&f.type==='image/jpeg') ||
+        (format==='webp'&&f.type==='image/webp');
+      if(keepSmaller && sameType && out.size>=f.size) out=f;
+
+      const rel=(f.webkitRelativePath||f.name).split('/');
+      if(rel.length>1) rel.shift(); // bỏ tên thư mục gốc
+      const oldName=rel.pop();
+      const newName=baseName(oldName)+extFor(format,oldName);
+      const path='_ANH_DA_NEN/'+[...rel,newName].join('/');
+
+      entries.push({name:path,blob:out,date:new Date(f.lastModified)});
+      after+=out.size; ok++;
+      const pct=f.size?Math.round((1-out.size/f.size)*100):0;
+      logEl.textContent+=`OK  ${f.name} | ${fmt(f.size)} → ${fmt(out.size)} | ${pct}%\n`;
+    }catch(err){
+      fail++;
+      logEl.textContent+=`LỖI  ${f.name} | ${err.message||err}\n`;
+    }
+    $('progress').value=i+1;
+    logEl.scrollTop=logEl.scrollHeight;
+    await new Promise(r=>setTimeout(r,0));
+  }
+
+  $('status').textContent='Đang tạo file ZIP...';
+  const zip=await makeZip(entries);
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(zip);
+  a.download='DNY_ANH_DA_NEN.zip';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),15000);
+
+  const saved=before-after, pct=before?((saved/before)*100).toFixed(1):'0.0';
+  $('status').textContent=`Xong: ${ok} ảnh, ${fail} lỗi. ${fmt(before)} → ${fmt(after)} (giảm ${pct}%). File ZIP đang được tải xuống.`;
+  startBtn.disabled=false;
+});
+</script>
+</body>
+</html>

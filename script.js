@@ -1,6 +1,8 @@
 const header=document.querySelector('.site-header');
 const menu=document.querySelector('.menu-toggle');
 const prefersReducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const mobileMotionQuery=window.matchMedia('(max-width: 800px)');
+const motionDuration=(desktopDuration)=>mobileMotionQuery.matches?desktopDuration/3:desktopDuration;
 
 menu?.addEventListener('click',()=>{header.classList.toggle('open');menu.setAttribute('aria-expanded',header.classList.contains('open'))});
 document.querySelectorAll('nav a').forEach(a=>a.addEventListener('click',()=>header.classList.remove('open')));
@@ -79,7 +81,7 @@ if(packingPhoto){
   const controls=packingPhoto.querySelector('.packing-controls');
   controls.innerHTML='<button type="button" aria-label="Tạm dừng cuộn ảnh">Ⅱ</button>';
   const toggle=controls.querySelector('button');
-  const motion=track.animate([{transform:'translateX(0)'},{transform:'translateX(-50%)'}],{duration:30000,iterations:Infinity,easing:'linear'});
+  const motion=track.animate([{transform:'translateX(0)'},{transform:'translateX(-50%)'}],{duration:motionDuration(30000),iterations:Infinity,easing:'linear'});
   let paused=prefersReducedMotion;
   const updateMotion=()=>{
     if(paused)motion.pause();else motion.play();
@@ -109,7 +111,7 @@ if(processVisual){
     slides.forEach((slide,itemIndex)=>slide.classList.toggle('is-active',itemIndex===activeSlide));
     dots.forEach((dot,itemIndex)=>dot.setAttribute('aria-selected',itemIndex===activeSlide?'true':'false'));
   };
-  const startSlider=()=>{clearInterval(sliderTimer);sliderTimer=setInterval(()=>showSlide(activeSlide+1),3000)};
+  const startSlider=()=>{clearInterval(sliderTimer);sliderTimer=setInterval(()=>showSlide(activeSlide+1),motionDuration(3000))};
   processVisual.querySelectorAll('.process-carousel__arrow').forEach(button=>button.addEventListener('click',()=>{showSlide(activeSlide+(button.dataset.direction==='next'?1:-1));startSlider()}));
   dots.forEach((dot,index)=>dot.addEventListener('click',()=>{showSlide(index);startSlider()}));
   processVisual.addEventListener('mouseenter',()=>clearInterval(sliderTimer));
