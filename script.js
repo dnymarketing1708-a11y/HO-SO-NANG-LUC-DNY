@@ -194,9 +194,12 @@ const customerProducts=[
 ];
 const customerList=document.querySelector('.partner-list');
 if(customerList){
+  const displayedCustomerProducts=mobileMotionQuery.matches
+    ? customerProducts
+    : [...customerProducts,...customerProducts];
   // A horizontally translated marquee is not reliably recognized by browser lazy-loading,
   // particularly on mobile. Load the complete reel up front so every card remains visible.
-  customerList.innerHTML=[...customerProducts,...customerProducts].map(([file,brand,type,description],index)=>`<article class="customer-product" data-product-index="${index%customerProducts.length}"${index>=customerProducts.length?' aria-hidden="true"':''}><img src="${encodeURI(`assets/KHÁCH HÀNG/${file}`)}" alt="${index>=customerProducts.length?'':description}" loading="eager" decoding="async"><span><b>${String((index%customerProducts.length)+1).padStart(2,'0')} / ${brand}</b><em>${type}</em><small>${description}</small></span></article>`).join('');
+  customerList.innerHTML=displayedCustomerProducts.map(([file,brand,type,description],index)=>`<article class="customer-product" data-product-index="${index%customerProducts.length}"${index>=customerProducts.length?' aria-hidden="true"':''}><img src="${encodeURI(`assets/KHÁCH HÀNG/${file}`)}" alt="${index>=customerProducts.length?'':description}" loading="eager" decoding="async"><span><b>${String((index%customerProducts.length)+1).padStart(2,'0')} / ${brand}</b><em>${type}</em><small>${description}</small></span></article>`).join('');
 }
 
 // Keep decorative reels off the compositor until visitors can actually see them.
