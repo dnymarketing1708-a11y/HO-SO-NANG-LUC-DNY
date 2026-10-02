@@ -224,21 +224,64 @@ imageViewer.innerHTML='<button class="image-viewer__close" type="button" aria-la
 document.body.append(imageViewer);
 const viewerImage=imageViewer.querySelector('img');
 const viewerCaption=imageViewer.querySelector('.image-viewer__caption');
-let viewerScale=1,viewerX=0,viewerY=0,dragStart=null;
-const renderViewer=()=>{viewerImage.style.transform=`translate(${viewerX}px,${viewerY}px) scale(${viewerScale})`;imageViewer.querySelector('[data-viewer-action="reset"]').textContent=`${Math.round(viewerScale*100)}%`};
-const setViewerScale=next=>{viewerScale=Math.min(5,Math.max(1,next));renderViewer()};
-const openViewer=index=>{const [file,brand,type,description]=customerProducts[index];viewerImage.src=encodeURI(`assets/KHÁCH HÀNG/${file}`);viewerImage.alt=description;viewerCaption.innerHTML=`<b>${brand}</b><span>${type}</span>`;viewerScale=1;viewerX=0;viewerY=0;renderViewer();imageViewer.showModal();document.body.classList.add('is-viewing-image')};
+const viewerStage=imageViewer.querySelector('.image-viewer__stage');
+const viewerReset=imageViewer.querySelector('[data-viewer-action="reset"]');
+let viewerScale=1,viewerX=0,viewerY=0,dragStart=null,pinchStart=null;
+const viewerPointers=new Map();
+const clamp=(value,min,max)=>Math.min(max,Math.max(min,value));
+const constrainViewerPosition=()=>{
+  const maxX=Math.max(0,(viewerImage.clientWidth*viewerScale-viewerStage.clientWidth)/2);
+  const maxY=Math.max(0,(viewerImage.clientHeight*viewerScale-viewerStage.clientHeight)/2);
+  viewerX=clamp(viewerX,-maxX,maxX);
+  viewerY=clamp(viewerY,-maxY,maxY);
+};
+const renderViewer=()=>{
+  constrainViewerPosition();
+  viewerImage.style.transform=`translate(${viewerX}px,${viewerY}px) scale(${viewerScale})`;
+  viewerReset.textContent=`${Math.round(viewerScale*100)}%`;
+  viewerStage.classList.toggle('is-zoomed',viewerScale>1);
+};
+const setViewerScale=next=>{
+  viewerScale=clamp(next,1,5);
+  if(viewerScale===1){viewerX=0;viewerY=0}
+  renderViewer();
+};
+const resetViewer=()=>{viewerScale=1;viewerX=0;viewerY=0;renderViewer()};
+const getPinchDistance=()=>{
+  const [first,second]=[...viewerPointers.values()];
+  return Math.hypot(second.x-first.x,second.y-first.y);
+};
+const openViewer=index=>{const [file,brand,type,description]=customerProducts[index];viewerImage.src=encodeURI(`assets/KHÁCH HÀNG/${file}`);viewerImage.alt=description;viewerCaption.innerHTML=`<b>${brand}</b><span>${type}</span>`;resetViewer();imageViewer.showModal();document.body.classList.add('is-viewing-image')};
 const closeViewer=()=>{imageViewer.close();document.body.classList.remove('is-viewing-image')};
 customerList?.addEventListener('click',event=>{const card=event.target.closest('.customer-product');if(card)openViewer(Number(card.dataset.productIndex))});
 imageViewer.querySelector('.image-viewer__close').addEventListener('click',closeViewer);
 imageViewer.addEventListener('click',event=>{if(event.target===imageViewer)closeViewer()});
-imageViewer.querySelector('.image-viewer__toolbar').addEventListener('click',event=>{const action=event.target.dataset.viewerAction;if(action==='zoom-in')setViewerScale(viewerScale+.35);if(action==='zoom-out')setViewerScale(viewerScale-.35);if(action==='reset'){viewerScale=1;viewerX=0;viewerY=0;renderViewer()}});
-imageViewer.querySelector('.image-viewer__stage').addEventListener('wheel',event=>{event.preventDefault();setViewerScale(viewerScale+(event.deltaY<0?.22:-.22))},{passive:false});
-imageViewer.querySelector('.image-viewer__stage').addEventListener('dblclick',()=>{if(viewerScale===1)setViewerScale(2);else{viewerScale=1;viewerX=0;viewerY=0;renderViewer()}});
-imageViewer.querySelector('.image-viewer__stage').addEventListener('pointerdown',event=>{dragStart={x:event.clientX,y:event.clientY,offsetX:viewerX,offsetY:viewerY};event.currentTarget.setPointerCapture(event.pointerId)});
-imageViewer.querySelector('.image-viewer__stage').addEventListener('pointermove',event=>{if(!dragStart)return;viewerX=dragStart.offsetX+event.clientX-dragStart.x;viewerY=dragStart.offsetY+event.clientY-dragStart.y;renderViewer()});
-imageViewer.querySelector('.image-viewer__stage').addEventListener('pointerup',()=>{dragStart=null});
-imageViewer.addEventListener('close',()=>document.body.classList.remove('is-viewing-image'));
+imageViewer.querySelector('.image-viewer__toolbar').addEventListener('click',event=>{const action=event.target.closest('button')?.dataset.viewerAction;if(action==='zoom-in')setViewerScale(viewerScale+.35);if(action==='zoom-out')setViewerScale(viewerScale-.35);if(action==='reset')resetViewer()});
+viewerStage.addEventListener('wheel',event=>{event.preventDefault();setViewerScale(viewerScale+(event.deltaY<0?.22:-.22))},{passive:false});
+viewerStage.addEventListener('dblclick',()=>{if(viewerScale===1)setViewerScale(2);else resetViewer()});
+viewerStage.addEventListener('pointerdown',event=>{
+  if(event.pointerType==='mouse'&&event.button!==0)return;
+  viewerPointers.set(event.pointerId,{x:event.clientX,y:event.clientY});
+  viewerStage.setPointerCapture(event.pointerId);
+  if(viewerPointers.size===2){dragStart=null;pinchStart={distance:getPinchDistance(),scale:viewerScale};return}
+  if(viewerScale>1)dragStart={pointerId:event.pointerId,x:event.clientX,y:event.clientY,offsetX:viewerX,offsetY:viewerY};
+});
+viewerStage.addEventListener('pointermove',event=>{
+  if(!viewerPointers.has(event.pointerId))return;
+  viewerPointers.set(event.pointerId,{x:event.clientX,y:event.clientY});
+  if(viewerPointers.size===2&&pinchStart?.distance){setViewerScale(pinchStart.scale*getPinchDistance()/pinchStart.distance);return}
+  if(dragStart?.pointerId!==event.pointerId)return;
+  viewerX=dragStart.offsetX+event.clientX-dragStart.x;
+  viewerY=dragStart.offsetY+event.clientY-dragStart.y;
+  renderViewer();
+});
+const endViewerPointer=event=>{
+  viewerPointers.delete(event.pointerId);
+  if(dragStart?.pointerId===event.pointerId)dragStart=null;
+  if(viewerPointers.size<2)pinchStart=null;
+};
+['pointerup','pointercancel','lostpointercapture'].forEach(type=>viewerStage.addEventListener(type,endViewerPointer));
+imageViewer.addEventListener('close',()=>{viewerPointers.clear();dragStart=null;pinchStart=null;document.body.classList.remove('is-viewing-image')});
 
 const animatedGroups=['.cap-item','.operation-card','.timeline li','.project'];
 animatedGroups.forEach(selector=>document.querySelectorAll(selector).forEach((el,index)=>{el.style.transitionDelay=`${Math.min(index%4,3)*85}ms`}));

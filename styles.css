@@ -211,8 +211,9 @@
 body.is-viewing-image{overflow:hidden}
 .image-viewer{width:100vw;height:100vh;max-width:none;max-height:none;margin:0;padding:0;border:0;background:rgba(2,7,11,.94);color:#fff;overflow:hidden}
 .image-viewer::backdrop{background:rgba(2,7,11,.78);backdrop-filter:blur(6px)}
-.image-viewer__stage{position:absolute;inset:0;display:grid;place-items:center;overflow:hidden;cursor:grab;touch-action:none}
-.image-viewer__stage:active{cursor:grabbing}
+.image-viewer__stage{position:absolute;inset:0;display:grid;place-items:center;overflow:hidden;cursor:default;touch-action:none}
+.image-viewer__stage.is-zoomed{cursor:grab}
+.image-viewer__stage.is-zoomed:active{cursor:grabbing}
 .image-viewer__stage img{display:block;max-width:min(88vw,1250px);max-height:82vh;object-fit:contain;will-change:transform;transition:transform .12s ease;user-select:none}
 .image-viewer__close{position:absolute;z-index:2;top:24px;right:28px;width:46px;height:46px;border:1px solid rgba(255,255,255,.5);border-radius:50%;background:rgba(7,19,30,.55);color:#fff;font:300 34px/1 var(--body);cursor:pointer}
 .image-viewer__toolbar{position:absolute;z-index:2;bottom:28px;left:50%;display:flex;overflow:hidden;border:1px solid rgba(255,255,255,.32);border-radius:4px;background:rgba(7,19,30,.78);transform:translateX(-50%)}
