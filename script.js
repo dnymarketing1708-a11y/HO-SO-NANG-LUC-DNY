@@ -194,16 +194,9 @@ const customerProducts=[
 ];
 const customerList=document.querySelector('.partner-list');
 if(customerList){
-  customerList.innerHTML=[...customerProducts,...customerProducts].map(([file,brand,type,description],index)=>`<article class="customer-product" data-product-index="${index%customerProducts.length}"${index>=customerProducts.length?' aria-hidden="true"':''}><img src="${encodeURI(`assets/KHÁCH HÀNG/${file}`)}" alt="${index>=customerProducts.length?'':description}" loading="lazy" decoding="async"><span><b>${String((index%customerProducts.length)+1).padStart(2,'0')} / ${brand}</b><em>${type}</em><small>${description}</small></span></article>`).join('');
-  const preloadCustomerImages=()=>{
-    [...customerList.querySelectorAll('img')].slice(0,customerProducts.length).forEach(image=>{image.loading='eager'});
-  };
-  const customerImageObserver=new IntersectionObserver(entries=>{
-    if(!entries[0].isIntersecting)return;
-    preloadCustomerImages();
-    customerImageObserver.unobserve(customerList);
-  },{rootMargin:'900px 0px'});
-  customerImageObserver.observe(customerList);
+  // A horizontally translated marquee is not reliably recognized by browser lazy-loading,
+  // particularly on mobile. Load the complete reel up front so every card remains visible.
+  customerList.innerHTML=[...customerProducts,...customerProducts].map(([file,brand,type,description],index)=>`<article class="customer-product" data-product-index="${index%customerProducts.length}"${index>=customerProducts.length?' aria-hidden="true"':''}><img src="${encodeURI(`assets/KHÁCH HÀNG/${file}`)}" alt="${index>=customerProducts.length?'':description}" loading="eager" decoding="async"><span><b>${String((index%customerProducts.length)+1).padStart(2,'0')} / ${brand}</b><em>${type}</em><small>${description}</small></span></article>`).join('');
 }
 
 // Keep decorative reels off the compositor until visitors can actually see them.
