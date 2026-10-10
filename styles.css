@@ -114,8 +114,8 @@
 .featured-footer{position:relative;padding:36px 0 8px;align-items:center}.featured-footer p{max-width:760px;display:flex;flex-direction:column;gap:18px;padding-left:23px;border-left:5px solid var(--accent)}.featured-footer p b{font:800 clamp(31px,3.35vw,52px)/1.1 var(--condensed);letter-spacing:.7px}.featured-footer p span{max-width:570px;color:#c5cdd0;font-size:13px;line-height:1.65}.featured-footer .button{min-width:205px;padding:19px 24px;font-size:11px;box-shadow:0 0 0 8px rgba(217,255,56,.09)}.featured-footer .button:hover{box-shadow:0 0 0 12px rgba(217,255,56,.16)}
 @media(max-width:800px){.featured-footer{padding-top:30px}.featured-footer p{padding-left:17px;gap:15px}.featured-footer p b{font-size:36px;line-height:1.1}.featured-footer p span{font-size:12px}.featured-footer .button{min-width:0;padding:18px 20px}}
 /* Supplied DNY design-station photograph for capability 01. */
-.cap-item:nth-child(1) .cap-photo{background-image:url('assets/Ảnh ChatGPT 10_20_02 29 thg 9, 2026.webp')!important;background-position:center!important}
-.cap-item:nth-child(3) .cap-photo{background-image:url('assets/Ảnh ChatGPT 10_26_05 29 thg 9, 2026.webp')!important;background-position:center!important}
+.cap-item:nth-child(1) .cap-photo{background-image:url('assets/dny-thiet-ke-dong-phuc-the-thao.webp')!important;background-position:center!important}
+.cap-item:nth-child(3) .cap-photo{background-image:url('assets/dny-ep-nhiet-so-ao.webp')!important;background-position:center!important}
 .cap-item:nth-child(4) .cap-photo{background-image:url('assets/dny-quality-control.webp')!important;background-position:center!important}
 /* Baseball product images use their own full-frame crop in the interactive showcase. */
 .process-panels .process-panel img.panel-slice{object-fit:cover}.process-panels .process-panel.is-active{flex:5 1 0;outline:2px solid var(--accent);outline-offset:-2px}.process-panels .process-panel.is-active:after{opacity:0}.process-panels .process-panel.is-active img.panel-full{opacity:1}
@@ -179,8 +179,8 @@
 .operation-card.is-counter-active:after{transform:scaleX(1)}
 
 /* Production process photography supplied for printing and cutting. */
-.production-strip div:nth-child(1){background-image:url('assets/1790406646177_2910754988914669424_2910754988914669424_7791cc006c8855d2a217fb842f50f378.webp')!important}
-.production-strip div:nth-child(2){background-image:url('assets/1790406646163_2910754988914669424_2910754988914669424_a86611d6b94abb6f13212c2591fd6812.webp')!important}
+.production-strip div:nth-child(1){background-image:url('assets/dny-fabric-printing.webp')!important}
+.production-strip div:nth-child(2){background-image:url('assets/dny-cutting-table.webp')!important}
 .production-strip div:nth-child(4){background-image:url('assets/dny-quality-control.webp')!important}
 
 /* Keep process names legible over the production photographs. */
@@ -251,12 +251,16 @@ body.is-viewing-image{overflow:hidden}
 .partners{padding-top:28px;padding-bottom:28px}
 @media(max-width:800px){.partners{padding-top:22px;padding-bottom:22px}}
 
+/* CEO portrait within the operational-capability message. */
+.ceo-message{grid-template-columns:minmax(190px,.38fr) minmax(0,1fr);gap:32px;align-items:stretch;padding:22px 32px;overflow:hidden}.ceo-message__portrait{margin:0;min-height:250px;overflow:hidden;background:#cad0ce}.ceo-message__portrait img{display:block;width:100%;height:100%;min-height:250px;object-fit:cover;object-position:center 18%}.ceo-message__content{position:relative;z-index:1;display:flex;flex-direction:column;justify-content:center;padding:6px 12px 6px 0}.ceo-message .eyebrow{margin:0 0 18px}.ceo-message blockquote,.ceo-message footer{grid-column:auto}.ceo-message footer{margin-top:22px}@media(max-width:800px){.ceo-message{display:block;padding:22px}.ceo-message__portrait{width:min(100%,310px);height:340px;min-height:0;margin:0 0 24px}.ceo-message__portrait img{min-height:0}.ceo-message__content{padding:0}}
+
 /* The third operational card keeps the original three-column layout while showing its added support details. */
 .operations.section{padding-bottom:0}
 .operations-intro>p:last-child{font-family:var(--body);font-size:20.8px;font-weight:400;line-height:1.7;color:#33404a}
 @media(min-width:801px){.operations-intro>p:last-child{align-self:center;margin:0}}
 @media(max-width:800px){.operations-intro>p:last-child{font-size:18.2px;line-height:1.65}}
 .operations-grid{grid-template-columns:repeat(3,1fr)}
+.ceo-message{position:relative;display:grid;grid-template-columns:minmax(150px,.38fr) minmax(0,1fr);column-gap:42px;align-items:start;margin:0 0 54px;padding:28px 32px 30px;border:1px solid var(--line);background:linear-gradient(110deg,#e2e8e4,#f4f6ee)}.ceo-message::before{content:'“';position:absolute;right:26px;top:-14px;font:800 130px/.7 Georgia,serif;color:rgba(7,19,30,.11)}.ceo-message .eyebrow{margin:7px 0 0;color:#68757d}.ceo-message blockquote{grid-column:2;margin:0;max-width:850px;font:500 clamp(21px,2.2vw,33px)/1.42 var(--body);letter-spacing:-.6px;color:var(--ink)}.ceo-message footer{grid-column:2;margin-top:22px;display:flex;flex-wrap:wrap;gap:8px 15px;align-items:baseline}.ceo-message footer strong{font:800 20px/1 var(--condensed);letter-spacing:.5px}.ceo-message footer span{font:700 10px/1.4 var(--body);letter-spacing:1.2px;color:#647178}@media(max-width:800px){.ceo-message{display:block;margin-bottom:38px;padding:24px 22px}.ceo-message .eyebrow{margin:0 0 18px}.ceo-message blockquote{font-size:21px;padding-right:8px}.ceo-message footer{margin-top:18px}.ceo-message footer strong{font-size:18px}.ceo-message::before{right:15px;top:-7px;font-size:100px}}
 .operation-card--support{min-height:560px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.12fr);grid-template-rows:max-content max-content max-content max-content minmax(min-content,1fr);column-gap:20px;align-items:start}
 .operation-card--support>.operation-index{grid-column:1/-1;grid-row:1}
 .operation-card--support>.eyebrow{grid-column:1;grid-row:2;align-self:start;margin:58px 0 12px}
@@ -280,6 +284,9 @@ body.is-viewing-image{overflow:hidden}
 @media(max-width:1100px) and (min-width:801px){.support-points li{grid-template-columns:45px minmax(0,1fr);gap:10px}.support-points__icon{width:45px;height:45px;border-radius:8px}.support-points__icon svg{width:33px;height:33px}.support-points p{font-size:12px}}
 @media(min-width:801px) and (max-width:1300px){.operations-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1.65fr)}.operation-card--support{padding:24px 18px;column-gap:12px}.operation-card--support .support-points{padding-left:12px}.operation-card--support .support-points li{grid-template-columns:32px minmax(0,1fr);gap:8px}.operation-card--support .support-points__icon{width:32px;height:36px}.operation-card--support .support-points__icon svg{width:26px;height:26px}.operation-card--support .support-points h5{font-size:16px}}
 @media(max-width:800px){.operations-grid{grid-template-columns:1fr}.operation-card--support{min-height:460px;padding:25px 18px;column-gap:14px}.operation-card--support>h3{font-size:clamp(42px,10vw,76px)}.operation-card--support>h4{font-size:22px}.operation-card--support .support-points{padding-left:12px;gap:16px}.operation-card--support .support-points li{grid-template-columns:32px minmax(0,1fr);gap:8px}.operation-card--support .support-points__icon{width:32px;height:36px}.operation-card--support .support-points__icon svg{width:26px;height:26px}.operation-card--support .support-points h5{font-size:16px}.operation-card--support>p:last-of-type{font-size:11px}}
+
+/* Fallback background makes the CEO portrait visible even while an image cache refreshes. */
+.ceo-message__portrait{background:#cad0ce url('assets/ceo-nguyen-phuong-thao-portrait-v2.png?v=20261010') center 18%/cover no-repeat!important}
 
 /* Keep the design-support panel readable on narrow screens.  This override
    intentionally comes last because the desktop grid is declared later in

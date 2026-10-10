@@ -101,12 +101,12 @@ if(packingPhoto){
 }
 if(processVisual){
   const panels=[
-    ['assets/%E1%BA%A2nh%20ChatGPT%2010_39_27%2029%20thg%209%2C%202026.webp','Mẫu áo thể thao đen vàng của DNY Sport'],
-    ['assets/%E1%BA%A2nh%20ChatGPT%2010_40_21%2029%20thg%209%2C%202026.webp','Mẫu áo thể thao vàng của DNY Sport'],
-    ['assets/%E1%BA%A2nh%20ChatGPT%2010_50_29%2029%20thg%209%2C%202026.webp','Mẫu áo thể thao xanh của DNY Sport'],
-    ['assets/%E1%BA%A2nh%20ChatGPT%2010_53_38%2029%20thg%209%2C%202026.webp','Mẫu áo thể thao đỏ của DNY Sport'],
-    ['assets/%E1%BA%A2nh%20ChatGPT%2012_44_00%2029%20thg%209%2C%202026.webp','Mẫu đồng phục thể thao DNY Sport'],
-    ['assets/%E1%BA%A2nh%20ChatGPT%2012_42_06%2029%20thg%209%2C%202026.webp','Mẫu trang phục thể thao DNY Sport']
+    ['assets/dny-ao-the-thao-den-vang.webp','Mẫu áo thể thao đen vàng của DNY Sport'],
+    ['assets/dny-ao-dong-phuc-maxim-vang.webp','Mẫu áo thể thao vàng của DNY Sport'],
+    ['assets/dny-ao-the-thao-xanh.webp','Mẫu áo thể thao xanh của DNY Sport'],
+    ['assets/dny-ao-the-thao-do.webp','Mẫu áo thể thao đỏ của DNY Sport'],
+    ['assets/dny-quan-vo-kmetal-xanh-vang.webp','Mẫu đồng phục thể thao DNY Sport'],
+    ['assets/dny-quan-muay-thai-kw-do.webp','Mẫu trang phục thể thao DNY Sport']
   ];
   processVisual.classList.add('process-carousel');
   processVisual.innerHTML=`<div class="process-carousel__slides">${panels.map(([src,label],index)=>`<figure class="process-carousel__slide${index===0?' is-active':''}"><img src="${src}" alt="${label}" loading="lazy"><figcaption>${String(index+1).padStart(2,'0')} / ${label}</figcaption></figure>`).join('')}</div><div class="process-carousel__controls"><button type="button" class="process-carousel__arrow" data-direction="previous" aria-label="Xem mẫu trước">←</button><div class="process-carousel__dots" role="tablist" aria-label="Chọn mẫu áo">${panels.map(([,label],index)=>`<button type="button" role="tab" aria-label="${label}" aria-selected="${index===0}" data-slide="${index}"></button>`).join('')}</div><button type="button" class="process-carousel__arrow" data-direction="next" aria-label="Xem mẫu tiếp theo">→</button></div>`;
@@ -179,18 +179,18 @@ if(kitGallery){
 }
 
 const customerProducts=[
-  ['Ảnh ChatGPT 10_40_21 29 thg 9, 2026.webp','Maxim','Áo thun đồng phục','Áo thun đồng phục Maxim màu vàng nổi bật, nhận diện Car – Bike rõ ràng, phù hợp đội ngũ dịch vụ di chuyển.'],
-  ['Ảnh ChatGPT 10_55_47 29 thg 9, 2026.webp','Dragon Hoops','Áo bóng rổ','Áo bóng rổ Dragon Hoops tông đỏ, phối biểu tượng rồng và họa tiết trống đồng, tạo phong cách mạnh mẽ và đậm chất Việt.'],
-  ['Ảnh ChatGPT 10_58_20 29 thg 9, 2026.webp','DNY Sport / Nghiện Đạp','Áo đạp xe','Áo đạp xe Nghiện Đạp tông đỏ – vàng, khai thác họa tiết trống đồng và bản đồ Việt Nam, mang tinh thần thể thao gắn với bản sắc Việt.'],
-  ['Ảnh ChatGPT 11_00_57 29 thg 9, 2026.webp','Sacombank – Lộ Bình Hòa','Bộ áo quần thể thao','Bộ đồng phục thể thao Sacombank Lộ Bình Hòa phối xanh – cam, họa tiết graphic mạnh và số áo nổi bật, phù hợp hoạt động đội nhóm.'],
-  ['Ảnh ChatGPT 11_07_15 29 thg 9, 2026.webp','Vua Cầu Lông','Áo cầu lông','Áo cầu lông Vua Cầu Lông phối đen – xanh mint, họa tiết hình học năng động, mang phong cách hiện đại đúng tinh thần môn cầu lông.'],
-  ['Ảnh ChatGPT 11_11_33 29 thg 9, 2026.webp','Relove Deep Cross Gaming','Áo Esports','Áo thi đấu Relove Deep Cross Gaming tông đen, thiết kế gaming tối giản với hệ thống logo đội tuyển và nhà tài trợ nổi bật.'],
-  ['Ảnh ChatGPT 11_15_37 29 thg 9, 2026.webp','Bến Tre Fishing Group','Áo khoác câu cá','Áo khoác Bến Tre Fishing Group tông xanh – trắng, có mũ và họa tiết lưới/cá đặc trưng, phù hợp hoạt động câu cá ngoài trời.'],
-  ['Ảnh ChatGPT 11_18_07 29 thg 9, 2026.webp','ACE Gym / Personal Trainer','Áo polo thể thao','Áo polo Personal Trainer phối đen – hồng nhạt, đường line ôm thân khỏe khoắn, phù hợp đồng phục huấn luyện viên và phòng gym.'],
-  ['Ảnh ChatGPT 11_22_43 29 thg 9, 2026.webp','Tyresö','Áo khoác thể thao','Áo khoác Tyresö đen – trắng với graphic minh họa mạnh, bố cục trước sau cá tính và phong cách street-sport nổi bật.'],
-  ['Ảnh ChatGPT 12_40_49 29 thg 9, 2026.webp','Vietstock','Áo polo Pickleball','Áo polo Vietstock phối trắng – xanh, họa tiết hình học cùng biểu tượng vợt pickleball, phù hợp sự kiện và hoạt động thể thao doanh nghiệp.'],
-  ['Ảnh ChatGPT 12_42_06 29 thg 9, 2026.webp','KW / Muay Thai','Quần Muay Thai','Quần Muay Thai KW màu đỏ, phom short thi đấu đặc trưng với chữ Thái và patch võ thuật, tạo cảm giác mạnh mẽ trên sàn tập.'],
-  ['Ảnh ChatGPT 12_44_00 29 thg 9, 2026.webp','K-Metal Works Customs / Kiên Phạm','Quần võ thuật','Quần võ thuật cá nhân hóa Kiên Phạm tông xanh đậm – vàng, họa tiết bông lúa và cờ Việt Nam, nhấn mạnh tinh thần thi đấu cá nhân.']
+  ['ao-dong-phuc-maxim-vang.webp','Maxim','Áo thun đồng phục','Áo thun đồng phục Maxim màu vàng nổi bật, nhận diện Car – Bike rõ ràng, phù hợp đội ngũ dịch vụ di chuyển.'],
+  ['ao-bong-ro-dragon-hoops-do.webp','Dragon Hoops','Áo bóng rổ','Áo bóng rổ Dragon Hoops tông đỏ, phối biểu tượng rồng và họa tiết trống đồng, tạo phong cách mạnh mẽ và đậm chất Việt.'],
+  ['ao-dap-xe-nghien-dap-do-vang.webp','DNY Sport / Nghiện Đạp','Áo đạp xe','Áo đạp xe Nghiện Đạp tông đỏ – vàng, khai thác họa tiết trống đồng và bản đồ Việt Nam, mang tinh thần thể thao gắn với bản sắc Việt.'],
+  ['dong-phuc-the-thao-sacombank-lo-binh-hoa.webp','Sacombank – Lộ Bình Hòa','Bộ áo quần thể thao','Bộ đồng phục thể thao Sacombank Lộ Bình Hòa phối xanh – cam, họa tiết graphic mạnh và số áo nổi bật, phù hợp hoạt động đội nhóm.'],
+  ['ao-cau-long-vua-cau-long.webp','Vua Cầu Lông','Áo cầu lông','Áo cầu lông Vua Cầu Lông phối đen – xanh mint, họa tiết hình học năng động, mang phong cách hiện đại đúng tinh thần môn cầu lông.'],
+  ['ao-esports-relove-deep-cross.webp','Relove Deep Cross Gaming','Áo Esports','Áo thi đấu Relove Deep Cross Gaming tông đen, thiết kế gaming tối giản với hệ thống logo đội tuyển và nhà tài trợ nổi bật.'],
+  ['ao-khoac-ben-tre-fishing-group.webp','Bến Tre Fishing Group','Áo khoác câu cá','Áo khoác Bến Tre Fishing Group tông xanh – trắng, có mũ và họa tiết lưới/cá đặc trưng, phù hợp hoạt động câu cá ngoài trời.'],
+  ['ao-polo-ace-gym-pt.webp','ACE Gym / Personal Trainer','Áo polo thể thao','Áo polo Personal Trainer phối đen – hồng nhạt, đường line ôm thân khỏe khoắn, phù hợp đồng phục huấn luyện viên và phòng gym.'],
+  ['ao-khoac-tyreso-den-trang.webp','Tyresö','Áo khoác thể thao','Áo khoác Tyresö đen – trắng với graphic minh họa mạnh, bố cục trước sau cá tính và phong cách street-sport nổi bật.'],
+  ['ao-polo-pickleball-vietstock.webp','Vietstock','Áo polo Pickleball','Áo polo Vietstock phối trắng – xanh, họa tiết hình học cùng biểu tượng vợt pickleball, phù hợp sự kiện và hoạt động thể thao doanh nghiệp.'],
+  ['quan-muay-thai-kw-do.webp','KW / Muay Thai','Quần Muay Thai','Quần Muay Thai KW màu đỏ, phom short thi đấu đặc trưng với chữ Thái và patch võ thuật, tạo cảm giác mạnh mẽ trên sàn tập.'],
+  ['quan-vo-kmetal-kien-pham.webp','K-Metal Works Customs / Kiên Phạm','Quần võ thuật','Quần võ thuật cá nhân hóa Kiên Phạm tông xanh đậm – vàng, họa tiết bông lúa và cờ Việt Nam, nhấn mạnh tinh thần thi đấu cá nhân.']
 ];
 const customerList=document.querySelector('.partner-list');
 if(customerList){
